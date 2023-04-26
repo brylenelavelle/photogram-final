@@ -23,6 +23,8 @@ class User < ApplicationRecord
   has_secure_password
 
   # Direct Associations
+
+  has_many :photos
   
   has_many(:likes, { :class_name => "Like", :foreign_key => "user_id", :dependent => :destroy })
 
