@@ -17,6 +17,8 @@ class Photo < ApplicationRecord
   validates(:owner_id, { :presence => true })
   validates(:image, { :presence => true })
 
+  mount_uploader :image, ImageUploader
+
   # Direct Associations
   belongs_to(:owner, { :required => true, :class_name => "User", :foreign_key => "owner_id", :counter_cache => :own_photos_count })
 
