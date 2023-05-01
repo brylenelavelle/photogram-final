@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
   # Direct Associations
 
-  has_many :photos
+  has_many :photos, { :class_name => "Photos", :foreign_key => "owner_id", :dependent => :destroy }
 
   has_many(:likes, { :class_name => "Like", :foreign_key => "fan_id", :dependent => :destroy })
 

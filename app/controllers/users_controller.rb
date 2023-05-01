@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
       render({ :template => "users/show.html.erb" })
     else
-      redirect_to("/", { :alert => "You need to sign in first."})
+      redirect_to("/", { :alert => "You need to sign in first." })
     end
   end
 
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
     if @the_user.valid?
       @the_user.save
-      redirect_to("/likes/#{@the_user.id}", { :notice => "Like updated successfully."} )
+      redirect_to("/likes/#{@the_user.id}", { :notice => "Like updated successfully." })
     else
       redirect_to("/likes/#{@the_user.id}", { :alert => @the_user.errors.full_messages.to_sentence })
     end
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 
     @the_user.destroy
 
-    redirect_to("/likes", { :notice => "Like deleted successfully."} )
+    redirect_to("/likes", { :notice => "Like deleted successfully." })
   end
 
   def liked_photos
@@ -68,11 +68,10 @@ class UsersController < ApplicationController
   end
 
   def feed
-    user = params.fetch("username")
-    matching_user = User.where({ :username => user }).first
-    @the_user = matching_user
-    @accepted_follow_request_count = @current_user.sent_follow_requests.where({ :status => "accepted"}).count
-    @accepted_follow_request = @current_user.sent_follow_requests.where({ :status => "accepted"})
-    render({:template=>"users/feed.html.erb"})
+    username = params.fetch("username")
+    @the_user = User.where({ :username => username }).first
+    @accepted_follow_request = @current_user.sent_follow_requests.where({ :status => "accepted" })
+
+    render({ :template => "users/feed.html.erb" })
   end
 end
