@@ -9,6 +9,22 @@
     <%= @the_user.followers.count %>
   </dd>
 
+  <%if session.fetch(:user_id) != @the_user.id%>
+  <% @following = FollowRequest.where({:sender_id => @the_user.id}) %>
+    <% request = @current_user.follow_request_for(@the_user.id) %> 
+          <% if request.nil? %>
+            <form action="/insert_follow_request" method="post">
+              <input type="hidden" name="query_recipient_id" value="<%= @current_user.id %>">
+              <button>Follow</button>
+            </form>
+          <% elsif request.status == "accepted" %>
+            <a href="/delete_follow_request/<%= request.id %>">
+                Unfollow
+              </a>
+          <% end %> 
+        <% end %>
+    
+
   <dd>
   <h4>Pending follow requests</h4>
     <% @followers.each do |request| %>
@@ -101,7 +117,7 @@
   <tr>
     <% @the_user.own_photos.each do |photo| %>
     <td>
-      <img src="<%= photo.image %>">
+      <img src="<%= photo.image %>" class="img-responsive">
     </td>
 
     <td>
@@ -113,7 +129,7 @@
     </td>
 
     <td>
-      <%= photo.created_at %>
+      <%= time_ago_in_words(photo.created_at) %> ago
     </td>
 
     <td>
