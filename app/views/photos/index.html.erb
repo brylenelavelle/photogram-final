@@ -6,6 +6,32 @@
   </div>
 </div>
 
+ <% if session.fetch(:user_id) != nil %>
+
+    <h2>
+      Add a new photo
+    </h2>
+
+    <form action="/insert_photo" method="post" enctype="multipart/form-data">
+
+      
+        <label for="image_box">
+          Image
+        </label>
+
+        <input type="file" id="image_box" name="query_image" placeholder="Enter a URL for the image...">
+      
+        <label for="browser_caption">
+          Caption
+        </label>
+
+          <textarea id="browser_caption" name="query_caption" placeholder="Enter a caption for the photo..."></textarea>
+      <button>
+        Add photo
+      </button>
+    </form>
+<%end%>
+
 <hr>
 <div>
   <div>

@@ -54,6 +54,8 @@ class UsersController < ApplicationController
     matching_user = User.where({ :username => user }).first
     @the_user = matching_user
 
+    @photos = @current_user.photos
+
     render("users/liked_photos.html.erb")
   end
 
@@ -66,7 +68,11 @@ class UsersController < ApplicationController
   end
 
   def feed
-  
-
+    user = params.fetch("username")
+    matching_user = User.where({ :username => user }).first
+    @the_user = matching_user
+    @accepted_follow_request_count = @current_user.sent_follow_requests.where({ :status => "accepted"}).count
+    @accepted_follow_request = @current_user.sent_follow_requests.where({ :status => "accepted"})
+    render({:template=>"users/feed.html.erb"})
   end
 end
