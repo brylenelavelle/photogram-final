@@ -32,4 +32,9 @@ class Photo < ApplicationRecord
   has_many(:followers, { :through => :owner, :source => :following })
 
   has_many(:fan_followers, { :through => :fans, :source => :following })
+
+  scope :pub, -> { joins(:owner).where(users: { private: false }) }
+  # def self.pub
+  #   joins(:owner).where(users: { private: false })
+  # end
 end

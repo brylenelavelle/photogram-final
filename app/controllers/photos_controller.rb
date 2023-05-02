@@ -1,11 +1,8 @@
 class PhotosController < ApplicationController
-  
   skip_before_action(:force_user_sign_in, { :only => [:sign_up_form, :create, :sign_in_form, :create_cookie, :index] })
 
   def index
-    matching_photos = Photo.all
-
-    @list_of_photos = matching_photos.order({ :created_at => :desc })
+    @list_of_photos = Photo.pub.default_order
 
     render({ :template => "photos/index.html.erb" })
   end
@@ -15,11 +12,11 @@ class PhotosController < ApplicationController
       the_id = params.fetch("path_id")
       matching_photos = Photo.where({ :id => the_id })
       @the_photo = matching_photos.at(0)
-      @user_like_checker = @the_photo.likes.where({ :fan_id => @current_user.id }).first 
+      @user_like_checker = @the_photo.likes.where({ :fan_id => @current_user.id }).first
       render({ :template => "photos/show.html.erb" })
-      else
-        redirect_to("/user_sign_in", { :alert => "You have to sign in first." })
-      end
+    else
+      redirect_to("/user_sign_in", { :alert => "You have to sign in first." })
+    end
   end
 
   def create
@@ -50,7 +47,7 @@ class PhotosController < ApplicationController
 
     if the_photo.valid?
       the_photo.save
-      redirect_to("/photos/#{the_photo.id}", { :notice => "Photo updated successfully."} )
+      redirect_to("/photos/#{the_photo.id}", { :notice => "Photo updated successfully." })
     else
       redirect_to("/photos/#{the_photo.id}", { :alert => the_photo.errors.full_messages.to_sentence })
     end
@@ -62,6 +59,6 @@ class PhotosController < ApplicationController
 
     the_photo.destroy
 
-    redirect_to("/photos", { :notice => "Photo deleted successfully."} )
+    redirect_to("/photos", { :notice => "Photo deleted successfully." })
   end
 end
